@@ -19,6 +19,7 @@ body {
     color: var(--text-color);
     background-color: #f9f9f9;
     padding: 20px;
+    overflow-x: auto;
 }
 
 header {
@@ -45,6 +46,9 @@ h1 {
     background-color: var(--white);
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 button {
@@ -100,10 +104,12 @@ button:hover {
     border: 1px solid #d32f2f;
 }
 
-.semesters-container {
+.horizontal-container {
     display: flex;
-    flex-direction: column;
-    gap: 30px;
+    gap: 20px;
+    padding: 10px;
+    overflow-x: auto;
+    min-height: 100vh;
 }
 
 .semester {
@@ -111,6 +117,8 @@ button:hover {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    min-width: 280px;
+    height: fit-content;
 }
 
 .semester-title {
@@ -119,11 +127,13 @@ button:hover {
     color: var(--primary-dark);
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 5px;
+    position: sticky;
+    left: 0;
 }
 
 .courses-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 15px;
 }
 
@@ -173,6 +183,23 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+/* Flechas de conexión entre materias */
+.course::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 2px;
+    background-color: var(--primary-color);
+    display: none;
+}
+
+.course.has-requirements::after {
+    display: block;
+}
+
 @media (max-width: 768px) {
     .controls {
         flex-direction: column;
@@ -185,7 +212,7 @@ button:hover {
         gap: 10px;
     }
     
-    .courses-container {
-        grid-template-columns: 1fr;
+    .semester {
+        min-width: 250px;
     }
 }
