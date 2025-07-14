@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular Matemáticas - UMSS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #4fc3f7;
+            text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: #0288d1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            background: #039be5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stats {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px 20px;
+            background: rgba(2, 136, 209, 0.2);
+            border-radius: 10px;
+            min-width: 150px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+        
+        .malla-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 20px 0;
+            gap: 15px;
+            scrollbar-width: thin;
+            scrollbar-color: #0288d1 #1a2a6c;
+        }
+        
+        .semestre {
+            min-width: 280px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .semestre:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .semestre-header {
+            text-align: center;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #0288d1;
+            color: #4fc3f7;
+            font-size: 1.4rem;
+        }
+        
+        .materias-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .materia {
+            background: linear-gradient(135deg, #0288d1, #02669e);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .materia:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1));
+            pointer-events: none;
+        }
+        
+        .materia:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .materia.aprobada {
+            background: linear-gradient(135deg, #00c853, #009624);
+        }
+        
+        .materia.bloqueada {
+            background: linear-gradient(135deg, #546e7a, #37474f);
+            cursor: not-allowed;
+        }
+        
+        .materia.bloqueada:hover {
+            transform: none;
+        }
+        
+        .materia-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .materia-req {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        
+        .req-list {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+        }
+        
+        .req-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        
+        .req-icon {
+            margin-right: 8px;
+            color: #4fc3f7;
+        }
+        
+        .req-item.aprobado .req-icon {
+            color: #00c853;
+        }
+        
+        .status-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0 20px;
+            margin-top: 30px;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .university {
+            color: #4fc3f7;
+            font-weight: bold;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+        
+        /* Scrollbar styling */
+        .malla-container::-webkit-scrollbar {
+            height: 10px;
+        }
+        
+        .malla-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        .malla-container::-webkit-scrollbar-thumb {
+            background: #0288d1;
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .semestre {
+                min-width: 260px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Malla Curricular - Licenciatura en Matemáticas</h1>
+            <div class="subtitle">Universidad Mayor de San Simón (UMSS)</div>
+        </header>
+        
+        <div class="controls">
+            <button id="reset-btn"><i class="fas fa-undo"></i> Reiniciar Malla</button>
+            <button id="demo-btn"><i class="fas fa-magic"></i> Demo Rápida</button>
+            <button id="save-btn"><i class="fas fa-save"></i> Guardar Progreso</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div>Materias Totales</div>
+                <div class="stat-value" id="total-count">38</div>
+            </div>
+            <div class="stat-item">
+                <div>Aprobadas</div>
+                <div class="stat-value" id="approved-count">0</div>
+            </div>
+            <div class="stat-item">
+                <div>Disponibles</div>
+                <div class="stat-value" id="available-count">5</div>
+            </div>
+            <div class="stat-item">
+                <div>Porcentaje</div>
+                <div class="stat-value" id="percentage">0%</div>
+            </div>
+        </div>
+        
+        <div class="malla-container" id="malla">
+            <!-- Los semestres se generarán con JavaScript -->
+        </div>
+        
+        <footer>
+            <p>Malla curricular interactiva - Licenciatura en Matemáticas</p>
+            <p class="university">Universidad Mayor de San Simón - UMSS</p>
+        </footer>
+    </div>
+
+    <script>
+        // Definición de todas las materias con sus prerrequisitos
+        const materias = [
+            // Semestre 1
+            { 
+                id: 'geometria-analitica', 
+                name: 'Geometría analítica', 
+                semester: 1, 
+                unlocks: [] 
+            },
+            { 
+                id: 'algebra-i', 
+                name: 'Algebra I', 
+                semester: 1, 
+                unlocks: ['estructuras-discretas', 'algebra-lineal'] 
+            },
+            { 
+                id: 'calculo-i', 
+                name: 'Calculo I', 
+                semester: 1, 
+                unlocks: ['calculo-ii'] 
+            },
+            { 
+                id: 'computacion-i', 
+                name: 'Computación I', 
+                semester: 1, 
+                unlocks: ['computacion-ii'] 
+            },
+            { 
+                id: 'ingles-i', 
+                name: 'Ingles I', 
+                semester: 1, 
+                unlocks: ['ingles-ii'] 
+            },
+            
+            // Semestre 2
+            { 
+                id: 'estructuras-discretas', 
+                name: 'Estructuras discretas', 
+                semester: 2, 
+                unlocks: ['teoria-axiomatica'] 
+            },
+            { 
+                id: 'algebra-lineal', 
+                name: 'Algebra lineal', 
+                semester: 2, 
+                unlocks: ['geometria-i', 'algebra-lineal-avanzada'] 
+            },
+            { 
+                id: 'calculo-ii', 
+                name: 'Calculo II', 
+                semester: 2, 
+                unlocks: ['analisis-i'] 
+            },
+            { 
+                id: 'computacion-ii', 
+                name: 'Computación II', 
+                semester: 2, 
+                unlocks: [] 
+            },
+            { 
+                id: 'ingles-ii', 
+                name: 'Ingles II', 
+                semester: 2, 
+                unlocks: [] 
+            },
+            
+            // Semestre 3
+            { 
+                id: 'teoria-axiomatica', 
+                name: 'Teoría axiomática', 
+                semester: 3, 
+                unlocks: ['algebra-abstracta-i'] 
+            },
+            { 
+                id: 'geometria-i', 
+                name: 'Geometría I', 
+                semester: 3, 
+                unlocks: ['geometria-ii'] 
+            },
+            { 
+                id: 'analisis-i', 
+                name: 'Análisis I', 
+                semester: 3, 
+                unlocks: ['analisis-ii', 'analisis-numerico-i'] 
+            },
+            { 
+                id: 'probabilidad-y-estadistica-i', 
+                name: 'Probabilidad y estadística I', 
+                semester: 3, 
+                unlocks: ['probabilidad-y-estadistica-ii'] 
+            },
+            { 
+                id: 'fisica-i', 
+                name: 'Física I', 
+                semester: 3, 
+                unlocks: ['fisica-ii'] 
+            },
+            
+            // Semestre 4
+            { 
+                id: 'geometria-ii', 
+                name: 'Geometría II', 
+                semester: 4, 
+                unlocks: ['geometria-iii'] 
+            },
+            { 
+                id: 'algebra-lineal-avanzada', 
+                name: 'Algebra lineal avanzada', 
+                semester: 4, 
+                unlocks: [] 
+            },
+            { 
+                id: 'analisis-ii', 
+                name: 'Análisis II', 
+                semester: 4, 
+                unlocks: ['analisis-iii'] 
+            },
+            { 
+                id: 'probabilidad-y-estadistica-ii', 
+                name: 'Probabilidad y estadística II', 
+                semester: 4, 
+                unlocks: [] 
+            },
+            { 
+                id: 'fisica-ii', 
+                name: 'Física II', 
+                semester: 4, 
+                unlocks: [] 
+            },
+            
+            // Semestre 5
+            { 
+                id: 'algebra-abstracta-i', 
+                name: 'Algebra abstracta I', 
+                semester: 5, 
+                unlocks: ['algebra-abstracta-ii'] 
+            },
+            { 
+                id: 'geometria-iii', 
+                name: 'Geometría III', 
+                semester: 5, 
+                unlocks: ['geometria-iv', 'teoria-algebraica', 'teoria-medida', 'analisis-funcional'] 
+            },
+            { 
+                id: 'analisis-iii', 
+                name: 'Análisis III', 
+                semester: 5, 
+                unlocks: ['analisis-iv'] 
+            },
+            { 
+                id: 'analisis-numerico-i', 
+                name: 'Análisis numérico I', 
+                semester: 5, 
+                unlocks: ['analisis-numerico-ii'] 
+            },
+            
+            // Semestre 6
+            { 
+                id: 'algebra-abstracta-ii', 
+                name: 'Algebra abstracta II', 
+                semester: 6, 
+                unlocks: ['algebra-abstracta-iii'] 
+            },
+            { 
+                id: 'geometria-iv', 
+                name: 'Geometría IV', 
+                semester: 6, 
+                unlocks: [] 
+            },
+            { 
+                id: 'analisis-iv', 
+                name: 'Análisis IV', 
+                semester: 6, 
+                unlocks: [] 
+            },
+            { 
+                id: 'analisis-numerico-ii', 
+                name: 'Análisis numérico II', 
+                semester: 6, 
+                unlocks: [] 
+            },
+            
+            // Semestre 7
+            { 
+                id: 'algebra-abstracta-iii', 
+                name: 'Algebra abstracta III', 
+                semester: 7, 
+                unlocks: [] 
+            },
+            { 
+                id: 'analisis-funcional', 
+                name: 'Análisis funcional', 
+                semester: 7, 
+                unlocks: [] 
+            },
+            { 
+                id: 'electiva-1', 
+                name: 'Electiva', 
+                semester: 7, 
+                unlocks: [] 
+            },
+            { 
+                id: 'electiva-2', 
+                name: 'Electiva', 
+                semester: 7, 
+                unlocks: [] 
+            },
+            
+            // Semestre 8
+            { 
+                id: 'teoria-algebraica', 
+                name: 'Teoría algebraica', 
+                semester: 8, 
+                unlocks: [] 
+            },
+            { 
+                id: 'teoria-medida', 
+                name: 'Teoría medida', 
+                semester: 8, 
+                unlocks: [] 
+            },
+            { 
+                id: 'electiva-3', 
+                name: 'Electiva', 
+                semester: 8, 
+                unlocks: [] 
+            },
+            
+            // Semestre 9
+            { 
+                id: 'seminario-de-grado', 
+                name: 'Seminario de grado', 
+                semester: 9, 
+                unlocks: [] 
+            },
+            { 
+                id: 'electiva-4', 
+                name: 'Electiva', 
+                semester: 9, 
+                unlocks: [] 
+            },
+            { 
+                id: 'electiva-5', 
+                name: 'Electiva', 
+                semester: 9, 
+                unlocks: [] 
+            },
+            
+            // Semestre 10
+            { 
+                id: 'trabajo-de-grado', 
+                name: 'Trabajo de grado', 
+                semester: 10, 
+                unlocks: [] 
+            },
+            { 
+                id: 'electiva-6', 
+                name: 'Electiva', 
+                semester: 10, 
+                unlocks: [] 
+            }
+        ];
+
+        // Estado de las materias (aprobadas o no)
+        let estadoMaterias = {};
+        
+        // Mapa de prerrequisitos
+        let prerrequisitos = {};
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Construir el mapa de prerrequisitos
+            materias.forEach(materia => {
+                estadoMaterias[materia.id] = false;
+                
+                materia.unlocks.forEach(unlockId => {
+                    if (!prerrequisitos[unlockId]) {
+                        prerrequisitos[unlockId] = [];
+                    }
+                    prerrequisitos[unlockId].push(materia.id);
+                });
+            });
+            
+            // Generar la malla visual
+            generarMalla();
+            
+            // Actualizar estadísticas
+            actualizarEstadisticas();
+            
+            // Configurar botones
+            document.getElementById('reset-btn').addEventListener('click', reiniciarMalla);
+            document.getElementById('demo-btn').addEventListener('click', demoRapida);
+            document.getElementById('save-btn').addEventListener('click', guardarProgreso);
+            
+            // Cargar progreso guardado si existe
+            cargarProgreso();
+        });
+        
+        // Función para generar la malla visual
+        function generarMalla() {
+            const mallaContainer = document.getElementById('malla');
+            mallaContainer.innerHTML = '';
+            
+            // Agrupar materias por semestre
+            const materiasPorSemestre = {};
+            materias.forEach(materia => {
+                if (!materiasPorSemestre[materia.semester]) {
+                    materiasPorSemestre[materia.semester] = [];
+                }
+                materiasPorSemestre[materia.semester].push(materia);
+            });
+            
+            // Generar cada semestre
+            for (let semestre = 1; semestre <= 10; semestre++) {
+                if (!materiasPorSemestre[semestre]) continue;
+                
+                const semestreDiv = document.createElement('div');
+                semestreDiv.className = 'semestre';
+                
+                const header = document.createElement('div');
+                header.className = 'semestre-header';
+                header.textContent = `Semestre ${semestre}`;
+                semestreDiv.appendChild(header);
+                
+                const materiasContainer = document.createElement('div');
+                materiasContainer.className = 'materias-container';
+                
+                materiasPorSemestre[semestre].forEach(materia => {
+                    const materiaDiv = document.createElement('div');
+                    materiaDiv.className = 'materia';
+                    
+                    // Comprobar si está bloqueada
+                    const bloqueada = estaBloqueada(materia.id);
+                    
+                    if (estadoMaterias[materia.id]) {
+                        materiaDiv.classList.add('aprobada');
+                    } else if (bloqueada) {
+                        materiaDiv.classList.add('bloqueada');
+                    }
+                    
+                    materiaDiv.dataset.id = materia.id;
+                    
+                    // Título de la materia
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'materia-title';
+                    titleDiv.innerHTML = `
+                        <span>${materia.name}</span>
+                        <i class="status-icon fas ${estadoMaterias[materia.id] ? 'fa-check-circle' : (bloqueada ? 'fa-lock' : 'fa-unlock')}"></i>
+                    `;
+                    materiaDiv.appendChild(titleDiv);
+                    
+                    // Prerrequisitos
+                    if (prerrequisitos[materia.id] && prerrequisitos[materia.id].length > 0) {
+                        const reqDiv = document.createElement('div');
+                        reqDiv.className = 'materia-req';
+                        reqDiv.textContent = 'Requisitos:';
+                        materiaDiv.appendChild(reqDiv);
+                        
+                        const reqList = document.createElement('div');
+                        reqList.className = 'req-list';
+                        
+                        prerrequisitos[materia.id].forEach(reqId => {
+                            const reqItem = document.createElement('div');
+                            reqItem.className = `req-item ${estadoMaterias[reqId] ? 'aprobado' : ''}`;
+                            reqItem.innerHTML = `
+                                <i class="req-icon fas ${estadoMaterias[reqId] ? 'fa-check-circle' : 'fa-circle'}"></i>
+                                ${materias.find(m => m.id === reqId).name}
+                            `;
+                            reqList.appendChild(reqItem);
+                        });
+                        
+                        materiaDiv.appendChild(reqList);
+                    }
+                    
+                    // Evento de clic
+                    if (!bloqueada && !estadoMaterias[materia.id]) {
+                        materiaDiv.addEventListener('click', () => {
+                            estadoMaterias[materia.id] = true;
+                            materiaDiv.classList.add('aprobada');
+                            
+                            // Actualizar la malla para reflejar cambios
+                            setTimeout(() => {
+                                generarMalla();
+                                actualizarEstadisticas();
+                            }, 300);
+                        });
+                    }
+                    
+                    materiasContainer.appendChild(materiaDiv);
+                });
+                
+                semestreDiv.appendChild(materiasContainer);
+                mallaContainer.appendChild(semestreDiv);
+            }
+        }
+        
+        // Comprobar si una materia está bloqueada
+        function estaBloqueada(materiaId) {
+            if (!prerrequisitos[materiaId]) return false;
+            
+            // Verificar si todos los prerrequisitos están aprobados
+            const todosAprobados = prerrequisitos[materiaId].every(reqId => estadoMaterias[reqId]);
+            
+            // Si hay prerrequisitos pero no todos están aprobados, está bloqueada
+            return !todosAprobados;
+        }
+        
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            const total = materias.length;
+            const aprobadas = Object.values(estadoMaterias).filter(v => v).length;
+            const disponibles = materias.filter(m => !estaBloqueada(m.id) && !estadoMaterias[m.id]).length;
+            const porcentaje = Math.round((aprobadas / total) * 100);
+            
+            document.getElementById('approved-count').textContent = aprobadas;
+            document.getElementById('available-count').textContent = disponibles;
+            document.getElementById('percentage').textContent = `${porcentaje}%`;
+        }
+        
+        // Reiniciar toda la malla
+        function reiniciarMalla() {
+            Object.keys(estadoMaterias).forEach(key => {
+                estadoMaterias[key] = false;
+            });
+            generarMalla();
+            actualizarEstadisticas();
+            localStorage.removeItem('mallaEstado');
+        }
+        
+        // Demo rápida (aprobar hasta el 4to semestre)
+        function demoRapida() {
+            reiniciarMalla();
+            
+            // Aprobar todas las materias hasta el 4to semestre
+            materias.filter(m => m.semester <= 4).forEach(m => {
+                estadoMaterias[m.id] = true;
+            });
+            
+            generarMalla();
+            actualizarEstadisticas();
+        }
+        
+        // Guardar progreso en localStorage
+        function guardarProgreso() {
+            localStorage.setItem('mallaEstado', JSON.stringify(estadoMaterias));
+            alert('¡Progreso guardado exitosamente!');
+        }
+        
+        // Cargar progreso desde localStorage
+        function cargarProgreso() {
+            const guardado = localStorage.getItem('mallaEstado');
+            if (guardado) {
+                estadoMaterias = JSON.parse(guardado);
+                generarMalla();
+                actualizarEstadisticas();
+            }
+        }
+    </script>
+</body>
+</html>
