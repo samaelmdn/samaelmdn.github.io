@@ -1,1 +1,22 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Malla Interactiva</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Malla Interactiva Personalizada</h1>
+    
+    <div class="controls">
+        <button id="reset-btn">Reiniciar</button>
+        <input type="range" id="grid-size" min="5" max="50" value="20">
+        <span id="size-value">20x20</span>
+    </div>
+    
+    <div class="grid-container" id="grid"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
