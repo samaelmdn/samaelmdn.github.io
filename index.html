@@ -3,135 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Curricular Matemáticas UMSS</title>
+    <title>Malla Curricular Horizontal - Matemáticas UMSS</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Malla Curricular Licenciatura en Matemáticas - UMSS</h1>
-    <div id="malla">
-        <!-- Semestre 1 -->
-        <div class="materia" data-id="geometria_analitica" data-requisitos="">
-            <button>Geometría Analítica</button>
-        </div>
-        <div class="materia" data-id="algebra_I" data-requisitos="">
-            <button>Álgebra I</button>
-        </div>
-        <div class="materia" data-id="calculo_I" data-requisitos="">
-            <button>Cálculo I</button>
-        </div>
-        <div class="materia" data-id="computacion_I" data-requisitos="">
-            <button>Computación I</button>
-        </div>
-        <div class="materia" data-id="ingles_I" data-requisitos="">
-            <button>Inglés I</button>
+    <header>
+        <h1>Licenciatura en Matemáticas - UMSS</h1>
+        <p>Malla curricular interactiva - Vista horizontal</p>
+    </header>
+
+    <main>
+        <div class="controls">
+            <button id="reset-btn">Reiniciar todo</button>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="color-box pending"></div>
+                    <span>Pendiente</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box approved"></div>
+                    <span>Aprobada</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box available"></div>
+                    <span>Disponible</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box locked"></div>
+                    <span>Bloqueada</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Semestre 2 -->
-        <div class="materia" data-id="estructuras_discretas" data-requisitos="algebra_I">
-            <button disabled>Estructuras Discretas</button>
+        <div class="horizontal-container" id="semesters">
+            <!-- Los semestres se generarán dinámicamente con JavaScript -->
         </div>
-        <div class="materia" data-id="algebra_lineal" data-requisitos="algebra_I">
-            <button disabled>Álgebra Lineal</button>
-        </div>
-        <div class="materia" data-id="calculo_II" data-requisitos="calculo_I">
-            <button disabled>Cálculo II</button>
-        </div>
-        <div class="materia" data-id="computacion_II" data-requisitos="computacion_I">
-            <button disabled>Computación II</button>
-        </div>
-        <div class="materia" data-id="ingles_II" data-requisitos="ingles_I">
-            <button disabled>Inglés II</button>
-        </div>
+    </main>
 
-        <!-- Semestre 3 -->
-        <div class="materia" data-id="teoria_axiomatica" data-requisitos="estructuras_discretas">
-            <button disabled>Teoría Axiomática</button>
-        </div>
-        <div class="materia" data-id="geometria_I" data-requisitos="algebra_lineal">
-            <button disabled>Geometría I</button>
-        </div>
-        <div class="materia" data-id="analisis_I" data-requisitos="calculo_II">
-            <button disabled>Análisis I</button>
-        </div>
-        <div class="materia" data-id="prob_estadistica_I" data-requisitos="">
-            <button disabled>Probabilidad y Estadística I</button>
-        </div>
-        <div class="materia" data-id="fisica_I" data-requisitos="">
-            <button disabled>Física I</button>
-        </div>
-
-        <!-- Semestre 4 -->
-        <div class="materia" data-id="geometria_II" data-requisitos="geometria_I">
-            <button disabled>Geometría II</button>
-        </div>
-        <div class="materia" data-id="algebra_lineal_avanzada" data-requisitos="algebra_lineal">
-            <button disabled>Álgebra Lineal Avanzada</button>
-        </div>
-        <div class="materia" data-id="analisis_II" data-requisitos="analisis_I">
-            <button disabled>Análisis II</button>
-        </div>
-        <div class="materia" data-id="prob_estadistica_II" data-requisitos="prob_estadistica_I">
-            <button disabled>Probabilidad y Estadística II</button>
-        </div>
-        <div class="materia" data-id="fisica_II" data-requisitos="fisica_I">
-            <button disabled>Física II</button>
-        </div>
-
-        <!-- Semestre 5 -->
-        <div class="materia" data-id="algebra_abstracta_I" data-requisitos="teoria_axiomatica">
-            <button disabled>Álgebra Abstracta I</button>
-        </div>
-        <div class="materia" data-id="geometria_III" data-requisitos="geometria_II">
-            <button disabled>Geometría III</button>
-        </div>
-        <div class="materia" data-id="analisis_III" data-requisitos="analisis_II">
-            <button disabled>Análisis III</button>
-        </div>
-        <div class="materia" data-id="analisis_numerico_I" data-requisitos="analisis_I">
-            <button disabled>Análisis Numérico I</button>
-        </div>
-
-        <!-- Semestre 6 -->
-        <div class="materia" data-id="algebra_abstracta_II" data-requisitos="algebra_abstracta_I">
-            <button disabled>Álgebra Abstracta II</button>
-        </div>
-        <div class="materia" data-id="geometria_IV" data-requisitos="geometria_III">
-            <button disabled>Geometría IV</button>
-        </div>
-        <div class="materia" data-id="analisis_IV" data-requisitos="analisis_III">
-            <button disabled>Análisis IV</button>
-        </div>
-        <div class="materia" data-id="analisis_numerico_II" data-requisitos="analisis_numerico_I">
-            <button disabled>Análisis Numérico II</button>
-        </div>
-
-        <!-- Semestre 7 -->
-        <div class="materia" data-id="algebra_abstracta_III" data-requisitos="algebra_abstracta_II">
-            <button disabled>Álgebra Abstracta III</button>
-        </div>
-        <div class="materia" data-id="analisis_funcional" data-requisitos="geometria_III">
-            <button disabled>Análisis Funcional</button>
-        </div>
-
-        <!-- Semestre 8 -->
-        <div class="materia" data-id="teoria_algebraica" data-requisitos="geometria_III">
-            <button disabled>Teoría Algebraica</button>
-        </div>
-        <div class="materia" data-id="teoria_medida" data-requisitos="geometria_III">
-            <button disabled>Teoría Medida</button>
-        </div>
-
-        <!-- Semestre 9 -->
-        <div class="materia" data-id="seminario_grado" data-requisitos="">
-            <button disabled>Seminario de Grado</button>
-        </div>
-
-        <!-- Semestre 10 -->
-        <div class="materia" data-id="trabajo_grado" data-requisitos="">
-            <button disabled>Trabajo de Grado</button>
-        </div>
-
-    </div>
     <script src="script.js"></script>
 </body>
 </html>
