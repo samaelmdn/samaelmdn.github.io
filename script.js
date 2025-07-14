@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Datos de la malla curricular
+    // Datos de la malla curricular actualizados
     const curriculumData = [
         {
             semester: 1,
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             courses: [
                 { name: "Teoría axiomática", opens: ["Algebra abstracta I"], status: "pending" },
                 { name: "Geometría I", opens: ["Geometría II"], status: "pending" },
-                { name: "Análisis I", opens: ["Análisis II", "Análisis numerico I"], status: "pending" },
+                { name: "Análisis I", opens: ["Análisis II", "Análisis numérico I"], status: "pending" },
                 { name: "Probabilidad y estadística I", opens: ["Probabilidad y estadística II"], status: "pending" },
                 { name: "Física I", opens: ["Física II"], status: "pending" }
             ]
@@ -38,16 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 { name: "Algebra lineal avanzada", opens: [], status: "pending" },
                 { name: "Análisis II", opens: ["Análisis III"], status: "pending" },
                 { name: "Probabilidad y estadística II", opens: [], status: "pending" },
-                { name: "Fisica II", opens: [], status: "pending" }
+                { name: "Física II", opens: [], status: "pending" }
             ]
         },
         {
             semester: 5,
             courses: [
                 { name: "Algebra abstracta I", opens: ["Algebra abstracta II"], status: "pending" },
-                { name: "Geometría III", opens: ["Teoria algebraica", "Teoria medida", "Análisis funcional"], status: "pending" },
-                { name: "Análisis III", opens: [], status: "pending" },
-                { name: "Análisis numerico I", opens: ["Análisis numerico II"], status: "pending" }
+                { name: "Geometría III", opens: ["Geometría IV", "Teoría algebraica", "Teoría medida", "Análisis funcional"], status: "pending" },
+                { name: "Análisis III", opens: ["Análisis IV"], status: "pending" }, // Actualizado
+                { name: "Análisis numérico I", opens: ["Análisis numérico II"], status: "pending" }
             ]
         },
         {
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 { name: "Algebra abstracta II", opens: ["Algebra abstracta III"], status: "pending" },
                 { name: "Geometría IV", opens: [], status: "pending" },
                 { name: "Análisis IV", opens: [], status: "pending" },
-                { name: "Análisis numerico II", opens: [], status: "pending" }
+                { name: "Análisis numérico II", opens: [], status: "pending" }
             ]
         },
         {
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const semestersContainer = document.getElementById('semesters');
     const resetBtn = document.getElementById('reset-btn');
 
-    // Renderizar la malla curricular
+    // Renderizar la malla curricular horizontal
     function renderCurriculum() {
         semestersContainer.innerHTML = '';
         
@@ -115,6 +115,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const courseElement = document.createElement('div');
                 courseElement.className = `course ${course.status}`;
                 courseElement.dataset.name = course.name;
+                
+                if (course.opens.length > 0) {
+                    courseElement.classList.add('has-requirements');
+                }
                 
                 const courseName = document.createElement('div');
                 courseName.className = 'course-name';
