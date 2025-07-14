@@ -1,218 +1,237 @@
-:root {
-    --primary-color: #1e88e5;
-    --primary-dark: #1565c0;
-    --primary-light: #64b5f6;
-    --secondary-color: #f5f5f5;
-    --text-color: #333;
-    --white: #ffffff;
-}
+document.addEventListener('DOMContentLoaded', function() {
+    // Datos de la malla curricular actualizados
+    const curriculumData = [
+        {
+            semester: 1,
+            courses: [
+                { name: "Geometría analítica", opens: [], status: "pending" },
+                { name: "Algebra I", opens: ["Estructuras discretas", "Algebra lineal"], status: "pending" },
+                { name: "Calculo I", opens: ["Calculo II"], status: "pending" },
+                { name: "Computación I", opens: ["Computación II"], status: "pending" },
+                { name: "Ingles I", opens: ["Ingles II"], status: "pending" }
+            ]
+        },
+        {
+            semester: 2,
+            courses: [
+                { name: "Estructuras discretas", opens: ["Teoría axiomática"], status: "pending" },
+                { name: "Algebra lineal", opens: ["Geometría I", "Algebra lineal avanzada"], status: "pending" },
+                { name: "Calculo II", opens: ["Análisis I"], status: "pending" },
+                { name: "Computación II", opens: [], status: "pending" },
+                { name: "Ingles II", opens: [], status: "pending" }
+            ]
+        },
+        {
+            semester: 3,
+            courses: [
+                { name: "Teoría axiomática", opens: ["Algebra abstracta I"], status: "pending" },
+                { name: "Geometría I", opens: ["Geometría II"], status: "pending" },
+                { name: "Análisis I", opens: ["Análisis II", "Análisis numérico I"], status: "pending" },
+                { name: "Probabilidad y estadística I", opens: ["Probabilidad y estadística II"], status: "pending" },
+                { name: "Física I", opens: ["Física II"], status: "pending" }
+            ]
+        },
+        {
+            semester: 4,
+            courses: [
+                { name: "Geometría II", opens: ["Geometría III"], status: "pending" },
+                { name: "Algebra lineal avanzada", opens: [], status: "pending" },
+                { name: "Análisis II", opens: ["Análisis III"], status: "pending" },
+                { name: "Probabilidad y estadística II", opens: [], status: "pending" },
+                { name: "Física II", opens: [], status: "pending" }
+            ]
+        },
+        {
+            semester: 5,
+            courses: [
+                { name: "Algebra abstracta I", opens: ["Algebra abstracta II"], status: "pending" },
+                { name: "Geometría III", opens: ["Geometría IV", "Teoría algebraica", "Teoría medida", "Análisis funcional"], status: "pending" },
+                { name: "Análisis III", opens: ["Análisis IV"], status: "pending" }, // Actualizado
+                { name: "Análisis numérico I", opens: ["Análisis numérico II"], status: "pending" }
+            ]
+        },
+        {
+            semester: 6,
+            courses: [
+                { name: "Algebra abstracta II", opens: ["Algebra abstracta III"], status: "pending" },
+                { name: "Geometría IV", opens: [], status: "pending" },
+                { name: "Análisis IV", opens: [], status: "pending" },
+                { name: "Análisis numérico II", opens: [], status: "pending" }
+            ]
+        },
+        {
+            semester: 7,
+            courses: [
+                { name: "Algebra abstracta III", opens: [], status: "pending" },
+                { name: "Análisis funcional", opens: [], status: "pending" },
+                { name: "Electiva", opens: [], status: "pending" },
+                { name: "Electiva", opens: [], status: "pending" }
+            ]
+        },
+        {
+            semester: 8,
+            courses: [
+                { name: "Teoría algebraica", opens: [], status: "pending" },
+                { name: "Teoría medida", opens: [], status: "pending" },
+                { name: "Electiva", opens: [], status: "pending" }
+            ]
+        },
+        {
+            semester: 9,
+            courses: [
+                { name: "Seminario de grado", opens: [], status: "pending" },
+                { name: "Electiva", opens: [], status: "pending" },
+                { name: "Electiva", opens: [], status: "pending" }
+            ]
+        },
+        {
+            semester: 10,
+            courses: [
+                { name: "Trabajo de grado", opens: [], status: "pending" },
+                { name: "Electiva", opens: [], status: "pending" }
+            ]
+        }
+    ];
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    const semestersContainer = document.getElementById('semesters');
+    const resetBtn = document.getElementById('reset-btn');
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: #f9f9f9;
-    padding: 20px;
-    overflow-x: auto;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: var(--primary-color);
-    color: var(--white);
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-h1 {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-}
-
-.controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 15px;
-    background-color: var(--white);
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: var(--white);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-button:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-}
-
-.legend {
-    display: flex;
-    gap: 20px;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.color-box {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-}
-
-.pending {
-    background-color: #e0e0e0;
-    border: 1px solid #bdbdbd;
-}
-
-.approved {
-    background-color: #4caf50;
-    border: 1px solid #388e3c;
-}
-
-.available {
-    background-color: var(--primary-light);
-    border: 1px solid var(--primary-color);
-}
-
-.locked {
-    background-color: #f44336;
-    border: 1px solid #d32f2f;
-}
-
-.horizontal-container {
-    display: flex;
-    gap: 20px;
-    padding: 10px;
-    overflow-x: auto;
-    min-height: 100vh;
-}
-
-.semester {
-    background-color: var(--white);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    min-width: 280px;
-    height: fit-content;
-}
-
-.semester-title {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: var(--primary-dark);
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 5px;
-    position: sticky;
-    left: 0;
-}
-
-.courses-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.course {
-    padding: 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.course.pending {
-    background-color: #e0e0e0;
-    border: 1px solid #bdbdbd;
-}
-
-.course.approved {
-    background-color: #4caf50;
-    color: white;
-    border: 1px solid #388e3c;
-}
-
-.course.available {
-    background-color: var(--primary-light);
-    border: 1px solid var(--primary-color);
-}
-
-.course.locked {
-    background-color: #f44336;
-    color: white;
-    border: 1px solid #d32f2f;
-    cursor: not-allowed;
-}
-
-.course-name {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.course-requirements {
-    font-size: 0.8rem;
-    opacity: 0.8;
-}
-
-.course:hover:not(.locked) {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* Flechas de conexión entre materias */
-.course::after {
-    content: '';
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 15px;
-    height: 2px;
-    background-color: var(--primary-color);
-    display: none;
-}
-
-.course.has-requirements::after {
-    display: block;
-}
-
-@media (max-width: 768px) {
-    .controls {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
+    // Renderizar la malla curricular horizontal
+    function renderCurriculum() {
+        semestersContainer.innerHTML = '';
+        
+        curriculumData.forEach(semesterData => {
+            const semesterElement = document.createElement('div');
+            semesterElement.className = 'semester';
+            
+            const semesterTitle = document.createElement('h2');
+            semesterTitle.className = 'semester-title';
+            semesterTitle.textContent = `Semestre ${semesterData.semester}`;
+            
+            const coursesContainer = document.createElement('div');
+            coursesContainer.className = 'courses-container';
+            
+            semesterData.courses.forEach(course => {
+                const courseElement = document.createElement('div');
+                courseElement.className = `course ${course.status}`;
+                courseElement.dataset.name = course.name;
+                
+                if (course.opens.length > 0) {
+                    courseElement.classList.add('has-requirements');
+                }
+                
+                const courseName = document.createElement('div');
+                courseName.className = 'course-name';
+                courseName.textContent = course.name;
+                
+                const courseRequirements = document.createElement('div');
+                courseRequirements.className = 'course-requirements';
+                
+                if (course.opens.length > 0) {
+                    courseRequirements.textContent = `Abre: ${course.opens.join(', ')}`;
+                } else {
+                    courseRequirements.textContent = 'No abre materias';
+                }
+                
+                courseElement.appendChild(courseName);
+                courseElement.appendChild(courseRequirements);
+                
+                // Solo agregar evento click si no está bloqueada
+                if (course.status !== 'locked') {
+                    courseElement.addEventListener('click', () => toggleCourseStatus(courseElement));
+                }
+                
+                coursesContainer.appendChild(courseElement);
+            });
+            
+            semesterElement.appendChild(semesterTitle);
+            semesterElement.appendChild(coursesContainer);
+            semestersContainer.appendChild(semesterElement);
+        });
+        
+        updateCourseAvailability();
     }
-    
-    .legend {
-        flex-wrap: wrap;
-        gap: 10px;
+
+    // Cambiar el estado de un curso
+    function toggleCourseStatus(courseElement) {
+        const courseName = courseElement.dataset.name;
+        
+        // Encontrar el curso en los datos
+        for (const semester of curriculumData) {
+            const course = semester.courses.find(c => c.name === courseName);
+            if (course) {
+                if (course.status === 'pending' || course.status === 'available') {
+                    course.status = 'approved';
+                } else if (course.status === 'approved') {
+                    course.status = 'pending';
+                }
+                break;
+            }
+        }
+        
+        renderCurriculum();
     }
-    
-    .semester {
-        min-width: 250px;
+
+    // Actualizar la disponibilidad de los cursos basado en los requisitos
+    function updateCourseAvailability() {
+        // Obtener todas las materias aprobadas
+        const approvedCourses = [];
+        curriculumData.forEach(semester => {
+            semester.courses.forEach(course => {
+                if (course.status === 'approved') {
+                    approvedCourses.push(course.name);
+                }
+            });
+        });
+        
+        // Actualizar el estado de disponibilidad
+        curriculumData.forEach(semester => {
+            semester.courses.forEach(course => {
+                if (course.status !== 'approved') {
+                    // Verificar si este curso abre otras materias que ya están aprobadas
+                    const opensApproved = course.opens.some(openedCourse => 
+                        approvedCourses.includes(openedCourse));
+                    
+                    if (opensApproved) {
+                        // Si abre materias ya aprobadas, no puede ser pending
+                        course.status = 'approved';
+                    } else {
+                        // Verificar requisitos para materias que abren este curso
+                        let isLocked = false;
+                        
+                        // Buscar en todos los semestres anteriores
+                        for (let i = 0; i < semester.semester - 1; i++) {
+                            const prevSemester = curriculumData[i];
+                            const requiredCourse = prevSemester.courses.find(c => 
+                                c.opens.includes(course.name));
+                            
+                            if (requiredCourse && requiredCourse.status !== 'approved') {
+                                isLocked = true;
+                                break;
+                            }
+                        }
+                        
+                        if (isLocked) {
+                            course.status = 'locked';
+                        } else {
+                            course.status = approvedCourses.length > 0 ? 'available' : 'pending';
+                        }
+                    }
+                }
+            });
+        });
     }
-}
+
+    // Reiniciar todo
+    resetBtn.addEventListener('click', () => {
+        curriculumData.forEach(semester => {
+            semester.courses.forEach(course => {
+                course.status = 'pending';
+            });
+        });
+        renderCurriculum();
+    });
+
+    // Renderizar inicialmente
+    renderCurriculum();
+});
